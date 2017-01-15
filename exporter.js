@@ -20,7 +20,17 @@ glob(globs[os.platform()], (err, result) => {
 
 	const db = new sqlite3.Database(profile + '/stylish.sqlite');
 
+	var stylrrr = [];
+
 	db.each('select * from styles', (err, style) => {
 		fs.writeFileSync('./exported/' + sanitize(style.name) + '.css' + (style.enabled ? '' : '.disabled'), style.code);
+		stylrrr.push({
+			'namE': style.name,
+			'stylE': style.code.replace(/\r/g, ''),
+			'enabled': !!style.enabled,
+			'author': style.url
+		});
+	}, (err) => {
+		fs.writeFileSync('./exported/stylRRR_DB.json', JSON.stringify(stylrrr));
 	});
 });
